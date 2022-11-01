@@ -1,5 +1,4 @@
 SELENIUM_EXECUTABLE_PATH = "/Users/matthew/Documents/Programming/selenium-driver/chromedriver"
-FACEBOOK_CREDENTIALS_PATH = "/Users/matthew/Documents/Programming/facebook-credentials/facebook-credentials.txt"
 
 CANDY_CRUSH_URL = "https://apps.facebook.com/candycrushsoda"
 

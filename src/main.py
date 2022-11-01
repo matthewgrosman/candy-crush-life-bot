@@ -1,14 +1,14 @@
 # main.py
-
-from selenium.webdriver import ActionChains
-from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.support.wait import WebDriverWait
-
 import constants
 import facebook_credentials
+import iframe_util
+
+from selenium.webdriver import ActionChains
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
@@ -49,14 +49,19 @@ def find_game_iframe(driver: webdriver.Chrome) -> WebElement:
 def send_lives(driver: webdriver.Chrome, iframe: WebElement) -> None:
     pass
     # Click on life button
+    iframe_util.click_life_button(driver, iframe)
 
     # Click "Send" button
+    iframe_util.click_send_button(driver, iframe)
 
     # De-select all friends
+    iframe_util.click_select_all_friends_button(driver, iframe)
 
     # Select friends
+    iframe_util.click_friend_button(driver, iframe)
 
     # Click "Send" button
+    iframe_util.click_send_button(driver, iframe)
 
 
 if __name__ == '__main__':
