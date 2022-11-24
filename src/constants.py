@@ -17,4 +17,4 @@ LOGIN_BUTTON_XPATH = '//*[@id="loginbutton"]'
 IFRAME_XPATH = '//*[@id="iframe_canvas"]'
 
 # The time to wait between each button click. This allows time for resources to load in.
-TIME_TO_SLEEP = 3
+TIME_TO_SLEEP = 1.5

@@ -4,6 +4,9 @@ import time
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
 
 def _get_button_list() -> list[dict]:
@@ -78,3 +81,18 @@ def send_lives(driver: webdriver.Chrome, iframe: WebElement) -> None:
         _click_buttons(driver, iframe, button_list)
         life_counter += 1
         print(life_counter)
+
+
+def find_game_iframe(driver: webdriver.Chrome) -> WebElement:
+    """
+    The game is not rendered directly in the source HTML, but rather is inside an iFrame.
+
+    This function finds the iFrame holding the game, waits until it is present on-screen, and then returns that
+    iFrame as an element we can interact with.
+
+    :param driver:  Chrome Webdriver that automates interactions with Chrome.
+    :return:        A WebElement that represents the iFrame the game is held in.
+    """
+    return WebDriverWait(driver, constants.SELENIUM_TIMEOUT).until(
+        EC.presence_of_element_located((By.XPATH, constants.IFRAME_XPATH))
+    )
