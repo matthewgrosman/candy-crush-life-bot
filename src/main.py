@@ -1,9 +1,9 @@
-# main.py
+import time
 import constants
+
 import facebook_credentials
 import iframe_util
 
-from selenium.webdriver import ActionChains
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -12,14 +12,25 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-def login(driver: webdriver.Chrome) -> None:
+def get_chrome_webdriver() -> webdriver.Chrome:
+    """
+    Builds and returns the Chrome webdriver that we will use to automate interactions with Chrome.
+
+    :return:    Chrome Webdriver that automates interactions with Chrome.
+    """
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--mute-audio")
+    return webdriver.Chrome(service=Service(constants.SELENIUM_EXECUTABLE_PATH), options=chrome_options)
+
+
+def login_to_facebook(driver: webdriver.Chrome) -> None:
     """
     Selenium opens Chrome in a private window each time, so no passwords or sessions are saved. This means we
     need to login to Facebook each time we run these scripts.
 
     This function logs the browser into Facebook so we can access Candy Crush.
 
-    :param driver:  Chrome webdriver that automates interactions with Chrome.
+    :param driver:  Chrome Webdriver that automates interactions with Chrome.
     :return:        None.
     """
     username_entry = driver.find_element(By.XPATH, constants.EMAIL_ENTRY_XPATH)
@@ -38,7 +49,7 @@ def find_game_iframe(driver: webdriver.Chrome) -> WebElement:
     This function finds the iFrame holding the game, waits until it is present on-screen, and then returns that
     iFrame as an element we can interact with.
 
-    :param driver:  Chrome webdriver that automates interactions with Chrome.
+    :param driver:  Chrome Webdriver that automates interactions with Chrome.
     :return:        A WebElement that represents the iFrame the game is held in.
     """
     return WebDriverWait(driver, constants.SELENIUM_TIMEOUT).until(
@@ -46,33 +57,14 @@ def find_game_iframe(driver: webdriver.Chrome) -> WebElement:
     )
 
 
-def send_lives(driver: webdriver.Chrome, iframe: WebElement) -> None:
-    pass
-    # Click on life button
-    iframe_util.click_life_button(driver, iframe)
-
-    # Click "Send" button
-    iframe_util.click_send_button(driver, iframe)
-
-    # De-select all friends
-    iframe_util.click_select_all_friends_button(driver, iframe)
-
-    # Select friends
-    iframe_util.click_friend_button(driver, iframe)
-
-    # Click "Send" button
-    iframe_util.click_send_button(driver, iframe)
-
-
 if __name__ == '__main__':
-    driver = webdriver.Chrome(service=Service(constants.SELENIUM_EXECUTABLE_PATH))
+    driver = get_chrome_webdriver()
     driver.get(constants.CANDY_CRUSH_URL)
 
-    login(driver)
+    login_to_facebook(driver)
 
-    canvas_xpath = '//*[@id="canvas"]'
+    # Wait for game to load.
+    time.sleep(constants.GAME_LOAD_TIME)
 
     iframe = find_game_iframe(driver)
-    send_lives(driver, iframe)
-
-    # ActionChains(driver=driver).move_to_element(canvas).click().perform()
+    iframe_util.send_lives(driver, iframe)
