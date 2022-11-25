@@ -32,7 +32,7 @@ def _get_button_list() -> list[dict]:
     # TO-DO: Change this to a proportional coordinate system instead of a pixel-based coordinate system so
     # this will work on any size display.
     heart_button = {'x': -165, 'y': -250}
-    send_lives_button = {'x': 0, 'y': 100}
+    send_lives_button = {'x': 0, 'y': 150}
     uncheck_button = {'x': 0, 'y': -50}
     final_send_button = {'x': 0, 'y': 250}
 
